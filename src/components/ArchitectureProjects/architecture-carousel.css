@@ -1,0 +1,962 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  font-size: 14px;
+
+  --color-text: #f3f1eb;
+  --color-bg: #11110f;
+  --color-muted: rgba(243, 241, 235, 0.52);
+  --color-border: rgba(243, 241, 235, 0.18);
+
+  --page-padding: 1.25rem;
+
+  --aspect: 4 / 5;
+
+  --grid-item-height: 20vh;
+
+  --c-gap: 3rem;
+
+  --r-gap: 3rem;
+
+  --column: 80px;
+
+  --preview-columns: 4;
+
+  --border-radius: 3px;
+}
+
+html {
+  min-height: 100%;
+  overflow-x: hidden;
+  background: var(--color-bg);
+}
+
+body {
+  min-height: 100%;
+  width: 100%;
+
+  margin: 0;
+
+  background: var(--color-bg);
+
+  color: var(--color-text);
+
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  -webkit-font-smoothing: antialiased;
+
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body,
+button,
+a {
+  cursor: default;
+}
+
+button {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* --------------------------------------------------
+   ROOT
+-------------------------------------------------- */
+
+/*
+ * The app shell paints a light #e8e8e3 behind every route, and the
+ * carousel's own box was transparent, so the light shell showed through
+ * until the first scene covered the viewport. That read as a white flash
+ * on load and washed out the header. Opaque from the first paint fixes it.
+ */
+
+.architecture-carousel {
+  background: var(--color-bg);
+}
+
+/* --------------------------------------------------
+   LOADING
+-------------------------------------------------- */
+
+.architecture-carousel.is-loading {
+  min-height: 100vh;
+}
+
+.architecture-carousel.is-loading::before {
+  content: "";
+
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 10000;
+
+  background: var(--color-bg);
+
+  pointer-events: none;
+}
+
+.architecture-carousel.is-loading::after {
+  content: "";
+
+  position: fixed;
+
+  z-index: 10001;
+
+  top: 50%;
+  left: 50%;
+
+  width: 100px;
+
+  height: 1px;
+
+  transform: translateX(-50%);
+
+  background: var(--color-text);
+
+  animation: architectureLoader 1.5s ease-in-out infinite alternate forwards;
+}
+
+@keyframes architectureLoader {
+  0% {
+    transform: translateX(-50%) scaleX(0);
+
+    transform-origin: left center;
+  }
+
+  50% {
+    transform: translateX(-50%) scaleX(1);
+
+    transform-origin: left center;
+  }
+
+  50.1% {
+    transform: translateX(-50%) scaleX(1);
+
+    transform-origin: right center;
+  }
+
+  100% {
+    transform: translateX(-50%) scaleX(0);
+
+    transform-origin: right center;
+  }
+}
+
+/* --------------------------------------------------
+   GLOBAL PORTFOLIO HEADER
+-------------------------------------------------- */
+
+.portfolio-header {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+
+  z-index: 5000;
+
+  width: 100%;
+
+  padding: var(--page-padding);
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  mix-blend-mode: difference;
+
+  pointer-events: none;
+}
+
+.portfolio-header__brand,
+.portfolio-header__nav {
+  pointer-events: auto;
+}
+
+.portfolio-header__brand {
+  font-size: 0.72rem;
+
+  letter-spacing: 0.12em;
+}
+
+.portfolio-header__nav {
+  display: flex;
+
+  gap: 1.5rem;
+
+  font-size: 0.72rem;
+
+  letter-spacing: 0.1em;
+}
+
+.portfolio-header__nav a {
+  position: relative;
+
+  opacity: 0.7;
+
+  transition: opacity 0.3s ease;
+}
+
+.portfolio-header__nav a:hover {
+  opacity: 1;
+}
+
+/* --------------------------------------------------
+   INTRO
+-------------------------------------------------- */
+
+.portfolio-intro {
+  min-height: 100vh;
+
+  padding: 8rem var(--page-padding) 5rem;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: flex-end;
+
+  position: relative;
+}
+
+.portfolio-intro__eyebrow {
+  margin: 0 0 1.5rem;
+
+  font-size: 0.7rem;
+
+  letter-spacing: 0.16em;
+
+  color: var(--color-muted);
+}
+
+.portfolio-intro h1 {
+  max-width: 900px;
+
+  margin: 0;
+
+  font-size: clamp(4rem, 10vw, 10rem);
+
+  line-height: 0.82;
+
+  letter-spacing: -0.065em;
+
+  font-weight: 400;
+}
+
+.portfolio-intro__description {
+  max-width: 420px;
+
+  margin: 2rem 0 0;
+
+  color: var(--color-muted);
+
+  font-size: 0.85rem;
+
+  line-height: 1.5;
+
+  text-transform: none;
+}
+
+.portfolio-intro__scroll {
+  position: absolute;
+
+  right: var(--page-padding);
+
+  bottom: var(--page-padding);
+
+  font-size: 0.65rem;
+
+  letter-spacing: 0.12em;
+
+  color: var(--color-muted);
+
+  writing-mode: vertical-rl;
+}
+
+/* --------------------------------------------------
+   PROJECTS
+-------------------------------------------------- */
+
+.projects-section {
+  position: relative;
+}
+
+.scene-wrapper {
+  position: relative;
+
+  width: 100%;
+}
+
+.scene {
+  position: relative;
+
+  height: 100vh;
+
+  min-height: 700px;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  perspective: 900px;
+
+  overflow: hidden;
+}
+
+.scene__title {
+  position: relative;
+
+  z-index: 20;
+
+  margin: 0;
+
+  text-align: center;
+
+  font-weight: 400;
+
+  pointer-events: auto;
+}
+
+.scene__title-button {
+  border: 0;
+
+  padding: 0;
+
+  margin: 0;
+
+  background: transparent;
+
+  color: var(--color-text);
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 0.65rem;
+
+  cursor: pointer;
+
+  text-align: center;
+}
+
+.scene__title span {
+  display: inline-block;
+
+  font-size: clamp(2rem, 4.2vw, 5rem);
+
+  line-height: 0.95;
+
+  letter-spacing: -0.045em;
+
+  font-weight: 400;
+}
+
+.scene__title small {
+  display: block;
+
+  font-size: 0.65rem;
+
+  letter-spacing: 0.16em;
+
+  color: var(--color-muted);
+
+  text-transform: uppercase;
+}
+
+.scene__title .char {
+  display: inline-block;
+
+  transform-style: preserve-3d;
+
+  transform-origin: 50% 0%;
+}
+
+.scene__meta {
+  position: absolute;
+
+  z-index: 20;
+
+  left: var(--page-padding);
+
+  right: var(--page-padding);
+
+  bottom: var(--page-padding);
+
+  display: flex;
+
+  justify-content: space-between;
+
+  color: var(--color-muted);
+
+  font-size: 0.65rem;
+
+  letter-spacing: 0.12em;
+
+  pointer-events: none;
+}
+
+/* --------------------------------------------------
+   3D CAROUSEL
+-------------------------------------------------- */
+
+.carousel {
+  width: 400px;
+
+  height: 500px;
+
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+
+  margin: -250px 0 0 -200px;
+
+  transform-style: preserve-3d;
+
+  will-change: transform;
+
+  transform: translateZ(-550px) rotateY(0deg);
+
+  pointer-events: none;
+}
+
+.scene:nth-child(even) .carousel {
+  transform: translateZ(-550px) rotateY(45deg);
+}
+
+.carousel__cell {
+  position: absolute;
+
+  width: 350px;
+
+  height: 420px;
+
+  top: 0;
+
+  left: 0;
+
+  transform-style: preserve-3d;
+
+  will-change: transform;
+}
+
+.card {
+  width: 100%;
+
+  height: 100%;
+
+  position: relative;
+
+  transform-style: preserve-3d;
+
+  will-change: transform, filter;
+}
+
+.card__face {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+
+  height: 100%;
+
+  overflow: hidden;
+
+  border-radius: var(--border-radius);
+
+  backface-visibility: hidden;
+
+  background-image: var(--img);
+
+  background-size: cover;
+
+  background-position: center;
+}
+
+.card__face img {
+  width: 100%;
+
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+
+  user-select: none;
+
+  pointer-events: none;
+}
+
+.card__face--back {
+  transform: rotateY(180deg);
+}
+
+/* --------------------------------------------------
+   PREVIEWS
+-------------------------------------------------- */
+
+.previews {
+  position: relative;
+
+  z-index: 100;
+}
+
+.preview {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 3000;
+
+  width: 100%;
+
+  height: 100%;
+
+  padding: 5rem 8vw 3rem;
+
+  display: grid;
+
+  grid-template-rows:
+    auto
+    1fr
+    auto;
+
+  align-content: center;
+
+  row-gap: 1rem;
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  background: var(--color-bg);
+
+  overflow-y: auto;
+}
+
+.preview__header {
+  width: 100%;
+
+  display: flex;
+
+  align-items: flex-start;
+
+  justify-content: space-between;
+
+  line-height: 1;
+}
+
+.preview__index {
+  display: block;
+
+  margin-bottom: 0.8rem;
+
+  color: var(--color-muted);
+
+  font-size: 0.65rem;
+
+  letter-spacing: 0.14em;
+}
+
+.preview__title {
+  margin: 0;
+}
+
+.preview__title span {
+  display: inline-block;
+
+  font-size: clamp(2rem, 5vw, 5rem);
+
+  line-height: 0.9;
+
+  letter-spacing: -0.05em;
+
+  font-weight: 400;
+}
+
+.preview__location {
+  margin: 0.8rem 0 0;
+
+  color: var(--color-muted);
+
+  font-size: 0.7rem;
+
+  letter-spacing: 0.1em;
+}
+
+.preview__close {
+  border: 0;
+
+  padding: 0;
+
+  margin: 0;
+
+  background: none;
+
+  color: var(--color-text);
+
+  font-size: 0.7rem;
+
+  letter-spacing: 0.12em;
+
+  cursor: pointer;
+}
+
+.preview__close:hover {
+  opacity: 0.55;
+}
+
+.grid {
+  width: 100%;
+
+  padding: 1rem 0;
+
+  display: grid;
+
+  /*
+   * A fixed four per row, not auto-fit. auto-fit packed as many tracks as it
+   * could and left the ten images as a 83px wide strip; the expanded view is
+   * meant to read as two tidy rows of four. Every project supplies eight
+   * preview images so the row count stays whole at this width and at the
+   * two column mobile fallback.
+   */
+
+  grid-template-columns: repeat(var(--preview-columns), minmax(0, 1fr));
+
+  column-gap: var(--c-gap);
+
+  row-gap: var(--r-gap);
+
+  /*
+   * Without this the rows stretch to fill the preview's 1fr track and every
+   * item grew far taller than its image, leaving a large empty gap above the
+   * caption.
+   */
+
+  align-content: start;
+
+  perspective: 900px;
+}
+
+.grid__item {
+  position: relative;
+
+  margin: 0;
+
+  padding: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 0.35rem;
+
+  overflow: hidden;
+
+  border-radius: var(--border-radius);
+
+  transform-style: preserve-3d;
+
+  will-change: transform, clip-path;
+}
+
+.grid__item-image {
+  width: 100%;
+
+  aspect-ratio: var(--aspect);
+
+  background-size: cover;
+
+  background-position: center;
+
+  transition: opacity 0.15s cubic-bezier(0.2, 0, 0.2, 1);
+}
+
+.grid__item:hover .grid__item-image {
+  opacity: 0.7;
+}
+
+.grid__item-caption {
+  display: flex;
+
+  justify-content: space-between;
+
+  font-size: 0.65rem;
+
+  color: var(--color-muted);
+}
+
+.preview__description {
+  max-width: 520px;
+
+  margin: 0;
+
+  font-size: 0.8rem;
+
+  line-height: 1.5;
+
+  color: var(--color-muted);
+
+  text-transform: none;
+}
+
+/* --------------------------------------------------
+   ABOUT
+-------------------------------------------------- */
+
+.about-section {
+  min-height: 80vh;
+
+  padding: 8rem var(--page-padding);
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+}
+
+.about-section > span,
+.contact-section > span {
+  margin-bottom: 2rem;
+
+  font-size: 0.65rem;
+
+  letter-spacing: 0.15em;
+
+  color: var(--color-muted);
+}
+
+.about-section h2 {
+  max-width: 1000px;
+
+  margin: 0;
+
+  font-size: clamp(3rem, 7vw, 8rem);
+
+  line-height: 0.9;
+
+  letter-spacing: -0.06em;
+
+  font-weight: 400;
+}
+
+/* --------------------------------------------------
+   CONTACT
+-------------------------------------------------- */
+
+.contact-section {
+  min-height: 70vh;
+
+  padding: 8rem var(--page-padding);
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: flex-end;
+}
+
+.contact-section a {
+  width: fit-content;
+
+  font-size: clamp(2rem, 5vw, 6rem);
+
+  line-height: 0.9;
+
+  letter-spacing: -0.05em;
+
+  border-bottom: 1px solid var(--color-border);
+
+  transition: opacity 0.3s ease;
+}
+
+.contact-section a:hover {
+  opacity: 0.55;
+}
+
+/* --------------------------------------------------
+   DESKTOP
+-------------------------------------------------- */
+
+@media screen and (min-width: 65em) {
+  :root {
+    --preview-columns: 4;
+  }
+}
+
+/* --------------------------------------------------
+   TABLET
+-------------------------------------------------- */
+
+@media screen and (max-width: 64em) {
+  :root {
+    --preview-columns: 4;
+  }
+
+  .scene {
+    min-height: 650px;
+  }
+
+  .carousel {
+    transform: translateZ(-500px);
+  }
+
+  .scene:nth-child(even) .carousel {
+    transform: translateZ(-500px) rotateY(30deg);
+  }
+
+  .preview {
+    padding: 5rem 4vw 2rem;
+  }
+
+  .grid {
+    column-gap: 1.5rem;
+
+    row-gap: 1.5rem;
+  }
+}
+
+/* --------------------------------------------------
+   MOBILE
+-------------------------------------------------- */
+
+@media screen and (max-width: 767px) {
+  :root {
+    --page-padding: 0.8rem;
+
+    --preview-columns: 2;
+
+    --c-gap: 0.8rem;
+
+    --r-gap: 1rem;
+
+    --column: 40px;
+  }
+
+  .portfolio-header {
+    align-items: flex-start;
+  }
+
+  .portfolio-header__nav {
+    gap: 0.7rem;
+
+    font-size: 0.58rem;
+  }
+
+  .portfolio-intro {
+    min-height: 85vh;
+
+    padding-bottom: 4rem;
+  }
+
+  .portfolio-intro h1 {
+    font-size: clamp(3.7rem, 17vw, 6rem);
+  }
+
+  .portfolio-intro__scroll {
+    display: none;
+  }
+
+  .scene {
+    height: 100svh;
+
+    min-height: 600px;
+
+    perspective: 700px;
+  }
+
+  .scene__title {
+    max-width: 80vw;
+  }
+
+  .scene__title span {
+    font-size: clamp(1.8rem, 8vw, 3rem);
+  }
+
+  .scene__meta {
+    font-size: 0.55rem;
+  }
+
+  .carousel {
+    width: 260px;
+
+    height: 340px;
+
+    margin: -170px 0 0 -130px;
+
+    transform: translateZ(-400px);
+  }
+
+  .scene:nth-child(even) .carousel {
+    transform: translateZ(-400px) rotateY(25deg);
+  }
+
+  .carousel__cell {
+    width: 260px;
+
+    height: 320px;
+  }
+
+  .preview {
+    padding: 4.5rem var(--page-padding) 2rem;
+
+    grid-template-rows:
+      auto
+      auto
+      auto;
+
+    align-content: start;
+
+    overflow-y: auto;
+  }
+
+  .preview__header {
+    margin-bottom: 1rem;
+  }
+
+  .preview__title span {
+    font-size: clamp(2rem, 9vw, 3rem);
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+
+    column-gap: 0.6rem;
+
+    row-gap: 0.8rem;
+  }
+
+  .preview__description {
+    margin-top: 1rem;
+
+    font-size: 0.75rem;
+  }
+
+  .about-section {
+    min-height: 70vh;
+
+    padding: 6rem var(--page-padding);
+  }
+
+  .contact-section {
+    min-height: 60vh;
+
+    padding: 6rem var(--page-padding);
+  }
+}

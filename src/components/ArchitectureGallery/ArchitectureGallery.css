@@ -1,0 +1,577 @@
+.architecture-gallery {
+  position: relative;
+  width: 100%;
+  height: 600vh;
+  background: #111;
+  color: #f4f2ed;
+
+  /*
+   * Without this the sticky viewport leaks a sliver of the page
+   * background on browsers that round sticky offsets.
+   */
+  overflow: clip;
+}
+
+/* ============================================================
+   STICKY VIEWPORT
+   ============================================================ */
+
+.architecture-gallery__viewport {
+  position: sticky;
+  top: 0;
+
+  width: 100%;
+  height: 100vh;
+
+  overflow: hidden;
+
+  isolation: isolate;
+
+  background: #111;
+}
+
+/* ============================================================
+   BACKGROUND STACK
+   ============================================================ */
+
+.architecture-gallery__backgrounds {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+}
+
+.architecture-gallery__background {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+
+  opacity: 0;
+}
+
+.architecture-gallery__background-image {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+
+  transform: scale(1.04);
+
+  filter: saturate(0.78) contrast(1.04);
+}
+
+/* ============================================================
+   IMAGE OVERLAY
+   ============================================================ */
+
+.architecture-gallery__overlay {
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.68) 0%,
+    rgba(0, 0, 0, 0.05) 42%,
+    rgba(0, 0, 0, 0.12) 58%,
+    rgba(0, 0, 0, 0.75) 100%
+  );
+
+  pointer-events: none;
+}
+
+/* ============================================================
+   PROJECT INFORMATION
+   ============================================================ */
+
+.architecture-gallery__project-info {
+  position: absolute;
+
+  left: 32px;
+  right: 32px;
+  bottom: 32px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  font-family: "Inter", system-ui, sans-serif;
+
+  font-size: 10px;
+  font-weight: 500;
+
+  letter-spacing: 0.12em;
+
+  text-transform: uppercase;
+
+  color: rgba(255, 255, 255, 0.72);
+}
+
+/* ============================================================
+   TITLE
+   ============================================================ */
+
+.architecture-gallery__titles {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 20;
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  pointer-events: none;
+}
+
+.architecture-gallery__title {
+  position: absolute;
+
+  margin: 0;
+
+  padding: 0;
+
+  font-family: "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+
+  font-size: clamp(5rem, 12vw, 13rem);
+
+  line-height: 0.82;
+
+  font-weight: 500;
+
+  letter-spacing: -0.065em;
+
+  text-transform: uppercase;
+
+  text-align: center;
+
+  white-space: nowrap;
+
+  color: #f4f2ed;
+
+  mix-blend-mode: screen;
+
+  overflow: visible;
+}
+
+/* SplitText word masks */
+
+.architecture-word-mask {
+  overflow: hidden;
+}
+
+.architecture-word {
+  display: inline-block;
+
+  will-change: transform, opacity;
+}
+
+/* ============================================================
+   CUBE WRAPPER
+   ============================================================ */
+
+.architecture-gallery__cube-wrapper {
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+
+  z-index: 30;
+
+  width: min(30vw, 30vh);
+  height: min(30vw, 30vh);
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  pointer-events: none;
+
+  /*
+   * Perspective belongs on the cube's parent.
+   */
+  perspective: 1100px;
+
+  perspective-origin: 50% 50%;
+
+  /*
+   * NOTE: the centring translate(-50%, -50%) deliberately lives in
+   * GSAP as xPercent/yPercent, not here. GSAP takes ownership of this
+   * element's transform, and a CSS transform would be read back as a
+   * pixel offset that the orbit tween then overwrites, knocking the
+   * cube half a cube-size down and to the right for the whole scroll.
+   */
+}
+
+/* ============================================================
+   CUBE
+   ============================================================ */
+
+.architecture-gallery__cube {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  /*
+   * VERY IMPORTANT
+   *
+   * Allows 50cqi to represent half of
+   * this cube's width.
+   */
+  container-type: size;
+
+  /*
+   * Keep all six faces in 3D space.
+   */
+  transform-style: preserve-3d;
+
+  transform-origin: center center;
+
+  will-change: transform;
+}
+
+/* ============================================================
+   CUBE FACES
+   ============================================================ */
+
+.architecture-gallery__cube-face {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  box-sizing: border-box;
+
+  padding: 3%;
+
+  /*
+   * Keep each face as a true 3D plane.
+   */
+  transform-style: preserve-3d;
+
+  /*
+   * React supplies the individual face geometry.
+   */
+  transform: var(--face-transform);
+
+  /*
+   * Prevent the backside of a face from
+   * bleeding through the cube.
+   */
+  backface-visibility: hidden;
+
+  -webkit-backface-visibility: hidden;
+
+  overflow: hidden;
+
+  background: #161616;
+
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.architecture-gallery__cube-face img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+
+  filter: grayscale(0.15) contrast(1.08);
+}
+
+.architecture-gallery__cube-face::after {
+  content: "";
+
+  position: absolute;
+
+  inset: 3%;
+
+  border: 1px solid rgba(255, 255, 255, 0.18);
+
+  pointer-events: none;
+}
+
+.architecture-gallery__cube-face-number {
+  position: absolute;
+
+  top: 8%;
+  left: 8%;
+
+  z-index: 2;
+
+  font-family: "Inter", system-ui, sans-serif;
+
+  font-size: 9px;
+
+  letter-spacing: 0.1em;
+
+  color: white;
+
+  mix-blend-mode: difference;
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+
+.architecture-gallery__header {
+  position: absolute;
+
+  /* clears the fixed site navbar, which stays on top of the gallery */
+  top: 86px;
+  left: 32px;
+  right: 32px;
+
+  z-index: 50;
+
+  display: grid;
+
+  grid-template-columns: 1fr auto 1fr;
+
+  align-items: center;
+
+  pointer-events: none;
+
+  font-family: "Inter", system-ui, sans-serif;
+
+  font-size: 10px;
+
+  letter-spacing: 0.12em;
+
+  text-transform: uppercase;
+}
+
+.architecture-gallery__brand {
+  font-size: 13px;
+
+  font-weight: 600;
+
+  letter-spacing: -0.01em;
+}
+
+.architecture-gallery__label {
+  justify-self: center;
+
+  color: rgba(255, 255, 255, 0.58);
+}
+
+.architecture-gallery__count {
+  justify-self: end;
+
+  color: rgba(255, 255, 255, 0.58);
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+
+.architecture-gallery__footer {
+  position: absolute;
+
+  left: 32px;
+  right: 32px;
+  bottom: 28px;
+
+  z-index: 50;
+
+  display: grid;
+
+  grid-template-columns: auto 1fr auto;
+
+  align-items: center;
+
+  gap: 20px;
+
+  font-family: "Inter", system-ui, sans-serif;
+
+  font-size: 9px;
+
+  letter-spacing: 0.12em;
+
+  text-transform: uppercase;
+
+  color: rgba(255, 255, 255, 0.56);
+
+  pointer-events: none;
+}
+
+.architecture-gallery__line {
+  height: 1px;
+
+  overflow: hidden;
+
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.architecture-gallery__line span {
+  display: block;
+
+  width: 20%;
+  height: 100%;
+
+  background: rgba(255, 255, 255, 0.75);
+}
+
+/* ============================================================
+   GRAIN
+   ============================================================ */
+
+.architecture-gallery__grain {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 40;
+
+  pointer-events: none;
+
+  opacity: 0.09;
+
+  mix-blend-mode: overlay;
+
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.28'/%3E%3C/svg%3E");
+
+  background-size: 180px 180px;
+}
+
+/* ============================================================
+   VIGNETTE
+   ============================================================ */
+
+.architecture-gallery__vignette {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 45;
+
+  pointer-events: none;
+
+  background: radial-gradient(
+    ellipse at center,
+    transparent 35%,
+    rgba(0, 0, 0, 0.08) 55%,
+    rgba(0, 0, 0, 0.62) 100%
+  );
+}
+
+/* ============================================================
+   TABLET
+   ============================================================ */
+
+@media (max-width: 991px) {
+  .architecture-gallery {
+    height: 600vh;
+  }
+
+  .architecture-gallery__cube-wrapper {
+    width: min(25vw, 25vh);
+    height: min(25vw, 25vh);
+  }
+
+  .architecture-gallery__title {
+    font-size: 11vw;
+  }
+
+  .architecture-gallery__project-info {
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+  }
+}
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 767px) {
+  .architecture-gallery {
+    height: 600vh;
+  }
+
+  .architecture-gallery__header {
+    top: 72px;
+
+    left: 18px;
+    right: 18px;
+
+    grid-template-columns: 1fr auto;
+  }
+
+  .architecture-gallery__label {
+    display: none;
+  }
+
+  .architecture-gallery__title {
+    width: 100%;
+
+    padding: 0 20px;
+
+    font-size: 18vw;
+
+    white-space: normal;
+
+    line-height: 0.82;
+  }
+
+  .architecture-gallery__cube-wrapper {
+    width: min(42vw, 42vh);
+    height: min(42vw, 42vh);
+
+    opacity: 0.88;
+  }
+
+  .architecture-gallery__project-info {
+    left: 18px;
+    right: 18px;
+    bottom: 18px;
+
+    font-size: 8px;
+  }
+
+  .architecture-gallery__footer {
+    left: 18px;
+    right: 18px;
+    bottom: 18px;
+
+    grid-template-columns: 1fr auto;
+  }
+
+  .architecture-gallery__footer .architecture-gallery__line {
+    display: none;
+  }
+
+  .architecture-gallery__footer span:last-child {
+    display: none;
+  }
+}
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .architecture-gallery__cube,
+  .architecture-gallery__background,
+  .architecture-gallery__background-image,
+  .architecture-gallery__title,
+  .architecture-word {
+    transition: none !important;
+    animation: none !important;
+  }
+}
