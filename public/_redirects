@@ -1,0 +1,10 @@
+# SPA fallback for client-side routing.
+#
+# TanStack Router uses browser history, so /services/architectural-design is a
+# real document request on a cold load. Without this rule the static host looks
+# for a matching file, finds none, and returns its own 404 instead of the app
+# shell. Vite's dev and preview servers apply this fallback automatically, which
+# is why deep links work locally and break only once deployed.
+#
+# The static catch-all has to come last so real assets still win.
+/*    /index.html   200

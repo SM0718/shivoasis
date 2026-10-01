@@ -203,6 +203,25 @@
   background: #f6eee8;
 }
 
+.preloader__tagline {
+  font-size: clamp(0.7rem, 1.6vmin, 0.95rem);
+
+  letter-spacing: 0.42em;
+
+  text-transform: uppercase;
+
+  white-space: nowrap;
+
+  color: rgba(246, 238, 232, 0.5);
+
+  /*
+   * Optical centring: the tracking adds a trailing space that would
+   * otherwise push the word left of the rule.
+   */
+
+  margin-left: 0.42em;
+}
+
 /* ============================================================
    META ROW
    ============================================================ */

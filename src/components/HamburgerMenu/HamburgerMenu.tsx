@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "@tanstack/react-router";
 import * as THREE from "three";
 import "./HamburgerMenu.css";
 
@@ -1406,6 +1407,7 @@ export default function HamburgerMenu({
 
   tone = "cream",
 }: HamburgerMenuProps) {
+  const router = useRouter();
   const rootRef = useRef<HTMLDivElement>(null);
 
   const sceneRef = useRef<PaperScene | null>(null);
@@ -1559,6 +1561,23 @@ export default function HamburgerMenu({
   }
 
   /*
+   * The menu is the only entry point to the nested routes, and plain
+   * <a href> makes that a full document request. On a static host with no
+   * SPA fallback that lands on the host's 404 rather than the router, so
+   * navigation goes through the router instead. Left alone for
+   * in-page anchors, which have nothing to route to.
+   */
+  function navigate(href: string) {
+    closeMenu();
+
+    if (href.startsWith("#")) {
+      return;
+    }
+
+    void router.navigate({ to: href });
+  }
+
+  /*
    * Lock body scrolling.
    */
   useEffect(() => {
@@ -1675,7 +1694,13 @@ export default function HamburgerMenu({
                   }`}
                   key={item.href || index}
                 >
-                  <a href={item.href} onClick={closeMenu}>
+                  <a
+                    href={item.href}
+                    onClick={(event) => {
+                      event.preventDefault();
+                      navigate(item.href);
+                    }}
+                  >
                     <span>{item.label}</span>
                   </a>
 
@@ -1689,7 +1714,10 @@ export default function HamburgerMenu({
                             href={child.href}
                             key={child.href}
                             className="menu-submenu-link"
-                            onClick={closeMenu}
+                            onClick={(event) => {
+                            event.preventDefault();
+                            navigate(child.href);
+                          }}
                           >
                             {child.label}
                           </a>

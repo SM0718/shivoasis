@@ -9,6 +9,8 @@ gsap.registerPlugin(SplitText);
 
 const WORDMARK = "SHIVOASIS";
 
+const TAGLINE = "Architects";
+
 const SHUTTERS = 5;
 
 /*
@@ -133,7 +135,10 @@ export function Preloader({ children }: PreloaderProps) {
 
       gsap.set(chars, { yPercent: 115, opacity: 0 });
 
-      gsap.set(".preloader__meta > *", { y: 14, opacity: 0 });
+      gsap.set([".preloader__meta > *", ".preloader__tagline"], {
+        y: 14,
+        opacity: 0,
+      });
 
       gsap.set(".preloader__rule-fill", { scaleX: 0, transformOrigin: "left center" });
 
@@ -167,7 +172,7 @@ export function Preloader({ children }: PreloaderProps) {
           0.15,
         )
         .to(
-          ".preloader__meta > *",
+          [".preloader__meta > *", ".preloader__tagline"],
           {
             y: 0,
             opacity: 1,
@@ -293,6 +298,8 @@ export function Preloader({ children }: PreloaderProps) {
               <span className="preloader__rule" aria-hidden>
                 <span className="preloader__rule-fill" />
               </span>
+
+              <span className="preloader__tagline">{TAGLINE}</span>
             </div>
 
             <div className="preloader__meta">
