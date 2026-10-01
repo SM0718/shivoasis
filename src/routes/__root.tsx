@@ -22,10 +22,27 @@ export const Route = createRootRoute({
 function RootLayout() {
   const pathname = useRouterState({ select: (s) => s.location.pathname })
 
+  /*
+   * The header is fixed and transparent, so its tone has to match whatever
+   * actually sits behind it. Dark routes are the home gallery, the portfolio
+   * index, the contact page, and everything under /services, which renders
+   * the dark #11110f react-3d-carousel. Every other route renders PageShell,
+   * the light #e8e8e3 sheet — including the two light pages nested under
+   * /portfolio, so /services is matched by prefix and /portfolio by exact
+   * path.
+   */
+  const path = pathname.replace(/\/+$/, '') || '/'
+  const onDark =
+    path === '/' ||
+    path === '/portfolio' ||
+    path === '/contact' ||
+    path === '/services' ||
+    path.startsWith('/services/')
+
   return (
     <QueryClientProvider client={queryClient}>
       <div className="flex min-h-svh flex-col bg-[#e8e8e3] text-foreground">
-        <SiteHeader tone={pathname.startsWith('/portfolio') ? 'ink' : 'cream'} />
+        <SiteHeader tone={onDark ? 'cream' : 'ink'} />
         <main className="flex-1">
           <Outlet />
         </main>

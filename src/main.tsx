@@ -2,6 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
 
+import { Preloader } from './components/Preloader'
 import { routeTree } from './routeTree.gen'
 import './index.css'
 
@@ -23,6 +24,8 @@ if (!container) throw new Error('Root element "#root" was not found')
 
 createRoot(container).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <Preloader>
+      <RouterProvider router={router} />
+    </Preloader>
   </StrictMode>,
 )

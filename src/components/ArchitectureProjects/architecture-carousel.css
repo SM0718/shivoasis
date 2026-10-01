@@ -45,7 +45,7 @@ body {
 
   color: var(--color-text);
 
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Poppins", system-ui, sans-serif;
 
   -webkit-font-smoothing: antialiased;
 
@@ -699,6 +699,112 @@ a {
   font-size: 0.65rem;
 
   color: var(--color-muted);
+}
+
+/* ============================================================
+   CHROMA GRID IN THE PREVIEW
+   ============================================================ */
+
+/*
+ * Chroma Grid ships fixed 320px tracks and a 1200px cap, which overflows the
+ * preview's content width at four columns, and its own 20px card radius and
+ * system-ui labels that do not match this page. The selectors are qualified
+ * with .preview so they outweigh the library's own rules, including its
+ * max-width media queries, which are viewport based and would otherwise win
+ * on narrower screens. Only fit and typography are adjusted here; the
+ * greyscale reveal, spotlight and hover behaviour are left untouched.
+ *
+ * The rows are pinned to 1fr rather than sized by the cards' intrinsic height.
+ * The preview is a fixed, full-height overlay whose middle track is 1fr and
+ * align-content: center, so auto rows let eight tall cards grow the track past
+ * the viewport and push the header and description off screen. Letting the
+ * rows share the track keeps the whole overlay anchored at any viewport height;
+ * the images crop with object-fit: cover instead of overflowing.
+ */
+
+.preview .preview-chroma {
+  width: 100%;
+
+  height: 100%;
+
+  min-height: 0;
+
+  max-width: 100%;
+
+  margin: 0;
+
+  padding: 0;
+
+  gap: var(--r-gap);
+
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+}
+
+.preview .preview-chroma .chroma-card {
+  width: 100%;
+
+  height: 100%;
+
+  min-height: 0;
+
+  border-radius: var(--border-radius);
+
+  border-color: var(--color-border);
+}
+
+.preview .preview-chroma .chroma-img-wrapper {
+  flex: 1 1 auto;
+
+  min-height: 0;
+
+  aspect-ratio: auto;
+
+  padding: 0;
+}
+
+.preview .preview-chroma .chroma-img-wrapper img {
+  border-radius: var(--border-radius);
+}
+
+.preview .preview-chroma .chroma-info {
+  flex: none;
+
+  padding: 0.7rem 0.75rem 0.8rem;
+
+  font-family: inherit;
+
+  font-size: 0.65rem;
+
+  letter-spacing: 0.1em;
+
+  color: var(--color-text);
+}
+
+.preview .preview-chroma .chroma-info .name {
+  margin: 0;
+
+  font-size: inherit;
+
+  font-weight: 400;
+
+  letter-spacing: inherit;
+
+  text-transform: uppercase;
+}
+
+.preview .preview-chroma .chroma-info .role,
+.preview .preview-chroma .chroma-info .handle {
+  color: var(--color-muted);
+}
+
+@media screen and (max-width: 767px) {
+  .preview .preview-chroma {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    grid-template-rows: repeat(4, minmax(0, 1fr));
+  }
 }
 
 .preview__description {

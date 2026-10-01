@@ -148,6 +148,16 @@ html {
   overscroll-behavior: none;
 }
 
+/*
+ * The preloader is fixed over the page, so the document must not
+ * scroll behind it while it is up.
+ */
+
+html:has(.preloader),
+body:has(.preloader) {
+  overflow: hidden;
+}
+
 body {
   margin: 0;
 }

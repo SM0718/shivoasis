@@ -8,6 +8,7 @@ import { SplitText } from "gsap/SplitText";
 
 import type { ArchitectureProject } from "./architectureProjects";
 
+import { ChromaGrid, type ChromaItem } from "./ChromaGrid";
 import { preloadImages } from "./preloadImages";
 
 import "./architecture-carousel.css";
@@ -47,7 +48,7 @@ const ArchitectureCarousel = ({ projects }: ArchitectureCarouselProps) => {
 
     const ctx = gsap.context(() => {
       const initialize = async () => {
-        await preloadImages(".grid__item-image");
+        await preloadImages(".chroma-img-wrapper img");
 
         if (!mounted) {
           return;
@@ -530,7 +531,7 @@ const ArchitectureCarousel = ({ projects }: ArchitectureCarouselProps) => {
          */
 
         const animatePreviewGridIn = (preview: HTMLElement) => {
-          const items = preview.querySelectorAll<HTMLElement>(".grid__item");
+          const items = preview.querySelectorAll<HTMLElement>(".chroma-card");
 
           gsap.set(items, {
             clearProps: "all",
@@ -554,7 +555,7 @@ const ArchitectureCarousel = ({ projects }: ArchitectureCarouselProps) => {
          */
 
         const animatePreviewGridOut = (preview: HTMLElement) => {
-          const items = preview.querySelectorAll<HTMLElement>(".grid__item");
+          const items = preview.querySelectorAll<HTMLElement>(".chroma-card");
 
           animateGridItems({
             items,
@@ -1146,7 +1147,20 @@ const ArchitectureCarousel = ({ projects }: ArchitectureCarouselProps) => {
         as a tall black sheet with the images squeezed into the first screen.
       */}
       <div className="previews">
-          {projects.map((project) => (
+          {projects.map((project) => {
+            const previewItems: ChromaItem[] = (
+              project.previewImages ?? project.images
+            ).map((image, index) => ({
+              image: image.src,
+              title: project.title,
+              alt: image.alt,
+              handle: String(index + 1).padStart(2, "0"),
+              location: `${project.location} \u00b7 ${project.year}`,
+              borderColor: "rgba(243, 241, 235, 0.18)",
+              gradient: "linear-gradient(145deg, #1c1c1a, #11110f)",
+            }));
+
+            return (
             <section
               key={`preview-${project.id}`}
               id={`preview-${project.id}`}
@@ -1170,34 +1184,20 @@ const ArchitectureCarousel = ({ projects }: ArchitectureCarouselProps) => {
                 </button>
               </div>
 
-              <div className="grid">
-                {/* the expanded view carries a longer, separate set */}
-                {(project.previewImages ?? project.images).map(
-                  (image, index) => (
-                    <figure
-                      className="grid__item"
-                      key={`${project.id}-grid-${index}`}
-                    >
-                      <div
-                        className="grid__item-image"
-                        style={
-                          {
-                            backgroundImage: `url(${image.src})`,
-                          } as React.CSSProperties
-                        }
-                      />
-
-                      <figcaption className="grid__item-caption">
-                        <span>{String(index + 1).padStart(2, "0")}</span>
-                      </figcaption>
-                    </figure>
-                  ),
-                )}
-              </div>
+              <ChromaGrid
+                className="preview-chroma"
+                items={previewItems}
+                columns={4}
+                radius={300}
+                damping={0.45}
+                fadeOut={0.6}
+                ease="power3.out"
+              />
 
               <p className="preview__description">{project.description}</p>
             </section>
-          ))}
+          );
+          })}
       </div>
     </div>
   );

@@ -263,6 +263,8 @@ export function ArchitectureGallery({ projects }: ArchitectureGalleryProps) {
   const cubeRef = useRef<HTMLDivElement>(null);
   const cubeWrapperRef = useRef<HTMLDivElement>(null);
 
+  const progressLineRef = useRef<HTMLSpanElement>(null);
+
   const setBackgroundRef = (el: HTMLDivElement | null, index: number) => {
     if (el) {
       backgroundRefs.current[index] = el;
@@ -353,6 +355,36 @@ export function ArchitectureGallery({ projects }: ArchitectureGalleryProps) {
        */
 
       applyOrbit(0);
+
+      /*
+       * ---------------------------------------------------------
+       * SCROLL PROGRESS BAR
+       * ---------------------------------------------------------
+       */
+
+      /*
+       * The bar owns a ScrollTrigger of its own rather than reading
+       * progress off the master timeline, because that timeline is
+       * never built on the reduced motion path below. A scroll driven
+       * readout is not decoration, so it stays live either way.
+       */
+
+      if (progressLineRef.current) {
+        gsap.fromTo(
+          progressLineRef.current,
+          { scaleX: 0 },
+          {
+            scaleX: 1,
+            ease: "none",
+            scrollTrigger: {
+              trigger: section,
+              start: "top top",
+              end: "bottom bottom",
+              scrub: true,
+            },
+          },
+        );
+      }
 
       /*
        * ---------------------------------------------------------
@@ -719,8 +751,6 @@ export function ArchitectureGallery({ projects }: ArchitectureGalleryProps) {
                 className="architecture-gallery__background-image"
               />
 
-              <div className="architecture-gallery__overlay" />
-
               <div className="architecture-gallery__project-info">
                 <span>{project.category}</span>
 
@@ -801,7 +831,7 @@ export function ArchitectureGallery({ projects }: ArchitectureGalleryProps) {
           <span>SCROLL TO EXPLORE</span>
 
           <div className="architecture-gallery__line">
-            <span />
+            <span ref={progressLineRef} />
           </div>
 
           <span>2023 — 2026</span>

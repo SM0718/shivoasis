@@ -1,8 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 
-import { PageShell } from '@/components/page-shell'
-import { getPage } from '@/lib/pages'
+import { ServicesCarouselPage } from '@/components/react-3d-carousel'
 
 export const Route = createFileRoute('/services/')({
-  component: () => <PageShell page={getPage('services')} />,
+  component: () => <ServicesCarouselPage pageKey="services" />,
 })

@@ -1,8 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 
-import { PageShell } from '@/components/page-shell'
-import { getPage } from '@/lib/pages'
+import { ContactPage } from '@/components/ContactPage'
 
 export const Route = createFileRoute('/contact')({
-  component: () => <PageShell page={getPage('contact')} />,
+  component: ContactPage,
 })

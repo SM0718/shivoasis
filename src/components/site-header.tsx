@@ -6,8 +6,24 @@ import HamburgerMenu, {
 // import { SiteMenu } from '@/components/site-menu'
 
 const MENU: HamburgerMenuItem[] = [
-  { label: 'Services', href: '/services' },
-  { label: 'Portfolio', href: '/portfolio' },
+  {
+    label: 'Services',
+    href: '/services',
+    children: [
+      { label: 'Architectural design', href: '/services/architectural-design' },
+      { label: 'Interior design', href: '/services/interior-design' },
+      { label: 'Design & construction', href: '/services/design-construction' },
+      { label: 'Conservation & heritage', href: '/services/conservation-heritage' },
+    ],
+  },
+  {
+    label: 'Portfolio',
+    href: '/portfolio',
+    children: [
+      { label: 'Planning applications', href: '/portfolio/planning-applications' },
+      { label: 'Conservation & heritage', href: '/portfolio/conservation-heritage' },
+    ],
+  },
   { label: 'About', href: '/about' },
   { label: 'Contact', href: '/contact' },
 ]

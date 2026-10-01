@@ -1,0 +1,248 @@
+/* ============================================================
+   PRELOADER
+   ============================================================ */
+
+.preloader {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 9000;
+
+  overflow: hidden;
+
+  pointer-events: all;
+
+  font-family: "Poppins", system-ui, sans-serif;
+}
+
+/* ============================================================
+   SHUTTERS
+   ============================================================ */
+
+.preloader__shutters {
+  position: absolute;
+
+  inset: 0;
+
+  display: flex;
+}
+
+.preloader__shutter {
+  flex: 1 1 0;
+
+  height: 100%;
+
+  background: #121212;
+
+  /*
+   * Each column collapses toward its own top edge on exit, so the
+   * screen appears to be drawn upward in slices.
+   */
+
+  transform-origin: top center;
+
+  will-change: transform;
+}
+
+/* ============================================================
+   BLUEPRINT GRID
+   ============================================================ */
+
+.preloader__blueprint {
+  position: absolute;
+
+  inset: 0;
+
+  transform-origin: top center;
+
+  background-image:
+    linear-gradient(
+      to right,
+      rgba(246, 238, 232, 0.07) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      rgba(246, 238, 232, 0.07) 1px,
+      transparent 1px
+    );
+
+  background-size: 64px 64px;
+}
+
+/* ============================================================
+   INNER
+   ============================================================ */
+
+/*
+ * Three rows: auto / 1fr / auto. The middle row soaks up all the
+ * leftover height, so the wordmark sits on the true optical centre
+ * instead of being pushed around by the height of the two label rows.
+ */
+
+.preloader__inner {
+  position: relative;
+
+  z-index: 2;
+
+  display: grid;
+
+  grid-template-rows: auto 1fr auto;
+
+  height: 100%;
+
+  padding: clamp(1.5rem, 4vmin, 2.75rem);
+
+  color: #f6eee8;
+}
+
+/* ============================================================
+   TOP ROW
+   ============================================================ */
+
+.preloader__top {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 1rem;
+}
+
+.preloader__eyebrow {
+  font-size: 10px;
+
+  letter-spacing: 0.28em;
+
+  text-transform: uppercase;
+
+  color: rgba(246, 238, 232, 0.45);
+}
+
+.preloader__counter {
+  display: inline-flex;
+
+  align-items: baseline;
+
+  gap: 0.35em;
+
+  font-size: 10px;
+
+  letter-spacing: 0.2em;
+
+  font-variant-numeric: tabular-nums;
+
+  color: rgba(246, 238, 232, 0.55);
+}
+
+.preloader__counter-value {
+  color: #f6eee8;
+}
+
+.preloader__counter-sep {
+  color: rgba(246, 238, 232, 0.3);
+}
+
+/* ============================================================
+   CENTER
+   ============================================================ */
+
+.preloader__center {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: clamp(1.5rem, 4vmin, 2.5rem);
+
+  text-align: center;
+}
+
+.preloader__mark {
+  font-size: clamp(2.4rem, 12.5vw, 11rem);
+
+  line-height: 0.86;
+
+  font-weight: 600;
+
+  letter-spacing: -0.045em;
+
+  text-transform: uppercase;
+
+  white-space: nowrap;
+}
+
+.preloader__char {
+  will-change: transform;
+}
+
+.preloader__rule {
+  position: relative;
+
+  display: block;
+
+  width: 100%;
+
+  height: 1px;
+
+  background: rgba(246, 238, 232, 0.16);
+
+  overflow: hidden;
+}
+
+.preloader__rule-fill {
+  position: absolute;
+
+  inset: 0;
+
+  background: #f6eee8;
+}
+
+/* ============================================================
+   META ROW
+   ============================================================ */
+
+.preloader__meta {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 0.75rem clamp(1.25rem, 3.5vmin, 2.75rem);
+
+  font-size: 10px;
+
+  letter-spacing: 0.22em;
+
+  text-transform: uppercase;
+
+  color: rgba(246, 238, 232, 0.42);
+}
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 700px) {
+  .preloader__blueprint {
+    background-size: 40px 40px;
+  }
+
+  .preloader__meta span:nth-child(4) {
+    display: none;
+  }
+}
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .preloader__shutter {
+    will-change: auto;
+  }
+}

@@ -1,0 +1,391 @@
+/*
+ * ---------------------------------------------------------------------------
+ * react-3d-carousel
+ * ---------------------------------------------------------------------------
+ *
+ * Scoped rewrite of the three stylesheets that shipped with the vanilla demo:
+ *
+ *   style.css               -> dropped, it was a global html/body/* reset
+ *   perspective-gallery.scss -> .r3c-perspective-*
+ *   parallax-sections.css    -> .r3c-parallax-*, .r3c-scene-*
+ *
+ * The reset is the reason this file exists. The demo's style.css zeroed margin,
+ * padding and font on every element type in the document, which is fine for a
+ * standalone page and destructive inside an app shell that runs on Tailwind, so
+ * the equivalents below are all nested under .r3c-root.
+ *
+ * Class names are prefixed because ScrollSmoother injects #smooth-wrapper and
+ * #smooth-content around the tree, and unscoped rules like "header" or "ul"
+ * from the original would leak out and restyle the site navbar.
+ */
+
+.r3c-root {
+  position: relative;
+  z-index: 1;
+  background: #11110f;
+  color: #f6eee8;
+
+  /* The demo's reset, scoped. */
+  font-family: inherit;
+  line-height: normal;
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  p,
+  figure {
+    margin: 0;
+  }
+
+  ul,
+  ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+  }
+}
+
+/*
+ * ScrollSmoother makes .ScrollSmoother-wrapper position:fixed and translates
+ * this element inside it, which takes the whole carousel out of document flow.
+ * The wrapper is only as tall as the viewport and both scenes are transparent
+ * between their images, so whatever scrolls behind them would otherwise show
+ * through — and the body behind #root carries the theme background, not the
+ * dark the scenes are composed for.
+ *
+ * This element keeps its full scroll height, so painting it opaque covers
+ * every scroll position.
+ */
+.r3c-smooth-content {
+  width: 100%;
+  background: #11110f;
+}
+
+/*
+ * Opening and closing direction cues. The demo spent its first and last
+ * viewport on these as bare header/footer text; here they are the same two
+ * screens the reading order calls for, scoped so they cannot touch the site
+ * navbar.
+ */
+.r3c-cue-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100dvh;
+}
+
+.r3c-cue {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  font-size: clamp(0.65rem, 1vmax, 0.8rem);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgb(246 238 232 / 0.45);
+}
+
+.r3c-cue svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+/*
+ * Release gap between the two pinned scenes. ScrollTrigger hands a pinned
+ * element back to the flow at the far end of its pin range, so without a
+ * little room here the sections would arrive on the same frame the focus beat
+ * let go. Kept short so it does not read as a blank screen of its own.
+ */
+.r3c-buffer {
+  height: 30dvh;
+}
+
+/* --------------------------------------------------------------------------
+ * Scene one: perspective gallery
+ * -------------------------------------------------------------------------- */
+
+/*
+ * Only the stage itself. ScrollTrigger adds the pin range as spacing on top of
+ * whatever height this is, so sizing the section at 300dvh as the demo did
+ * leaves 300dvh of dead scroll trailing the last frame. 100dvh means the pin
+ * supplies all the scroll and the stage scrolls away by its own height.
+ */
+.r3c-perspective {
+  height: 100dvh;
+}
+
+.r3c-perspective__stage {
+  position: relative;
+  height: 100dvh;
+  overflow: hidden;
+  perspective: 100dvh;
+}
+
+.r3c-perspective__wrapper,
+.r3c-perspective__frame {
+  position: absolute;
+  inset: 0;
+  height: 100dvh;
+  width: 100%;
+}
+
+/*
+ * position:absolute is load bearing on this block, not just on the per slot
+ * offsets below. Without it the media divs stay static, which makes left/top
+ * inert and collapses img height to auto, so the six frames pile up as a
+ * narrow column in the top left corner instead of spreading across the stage.
+ */
+.r3c-perspective__media {
+  position: absolute;
+}
+
+.r3c-perspective__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/*
+ * Six absolutely positioned frames. The offsets are percentages of the stage,
+ * so the composition holds at any viewport size.
+ */
+.r3c-perspective__media--1 {
+  width: 20%;
+  left: 15%;
+  top: 8%;
+}
+
+.r3c-perspective__media--2 {
+  width: 20.8%;
+  right: 14%;
+  top: 35%;
+}
+
+.r3c-perspective__media--3 {
+  width: 20%;
+  left: 20%;
+  top: 69%;
+}
+
+.r3c-perspective__media--4 {
+  width: 20%;
+  right: 37.5%;
+  top: 69%;
+}
+
+.r3c-perspective__media--5 {
+  width: 25%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.r3c-perspective__media--6 {
+  width: 34%;
+  left: 37.5%;
+  top: 8%;
+}
+
+/* --------------------------------------------------------------------------
+ * Scene two: parallax sections
+ * -------------------------------------------------------------------------- */
+
+/*
+ * Same reasoning as .r3c-perspective: the pin range is added as spacing, so
+ * this is just the stage and the pin supplies the 300vh of scroll.
+ */
+.r3c-parallax {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+}
+
+.r3c-parallax__stage {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  color: #f6eee8;
+}
+
+.r3c-scene {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  max-width: 100%;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+/*
+ * Stacking order is set inline from the scene count rather than through
+ * nth-of-type rules, so adding or dropping a scene cannot silently leave one
+ * of them on z-index: auto. Later scenes sit under earlier ones so a closed
+ * clip reveals the next one down.
+ */
+
+.r3c-scene__backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.r3c-scene__backdrop img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(12px);
+  transform: scale(1.1);
+}
+
+.r3c-scene__panel {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6vmax;
+  width: 50%;
+  margin-left: 50%;
+  padding: 0 clamp(1.5rem, 5vw, 6rem) 0 clamp(1.5rem, 4vw, 5rem);
+}
+
+.r3c-scene__title {
+  font-size: clamp(1.6rem, 3vmax, 3.4rem);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+.r3c-scene__lines {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75vmax;
+  font-size: clamp(0.7rem, 1.1vmax, 1.05rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(246 238 232 / 0.6);
+}
+
+/* The square crop that sits over the left half of the stage. */
+.r3c-parallax__stack {
+  position: absolute;
+  z-index: 10;
+  left: 7.5%;
+  top: 50%;
+  width: 35%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  transform: translateY(-50%);
+}
+
+.r3c-parallax__stack-frame {
+  position: absolute;
+  inset: 0;
+}
+
+.r3c-parallax__stack-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* --------------------------------------------------------------------------
+ * Reduced motion
+ *
+ * GSAP is skipped entirely in this mode, so the pinned scenes have to fall
+ * back to a plain vertical stack and the perspective gallery to a static
+ * collage. Both are sized to flow naturally rather than 300dvh / 400vh.
+ * -------------------------------------------------------------------------- */
+
+.r3c-root--static .r3c-cue-section {
+  height: auto;
+  padding: clamp(2rem, 6vh, 4rem) 0;
+}
+
+.r3c-root--static .r3c-buffer {
+  display: none;
+}
+
+.r3c-root--static .r3c-perspective {
+  height: auto;
+  padding: clamp(4rem, 12vh, 8rem) 0;
+}
+
+.r3c-root--static .r3c-perspective__stage {
+  position: relative;
+  height: auto;
+  overflow: visible;
+  perspective: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: clamp(0.75rem, 2vw, 1.5rem);
+  padding: 0 clamp(1.25rem, 5vw, 4rem);
+}
+
+.r3c-root--static .r3c-perspective__wrapper,
+.r3c-root--static .r3c-perspective__frame {
+  position: relative;
+  inset: auto;
+  height: auto;
+  width: 100%;
+}
+
+.r3c-root--static .r3c-perspective__media {
+  position: relative !important;
+  inset: auto !important;
+  width: 100% !important;
+  left: auto !important;
+  right: auto !important;
+  top: auto !important;
+  aspect-ratio: 3 / 4;
+  transform: none !important;
+}
+
+.r3c-root--static .r3c-parallax {
+  height: auto;
+}
+
+.r3c-root--static .r3c-parallax__stage {
+  height: auto;
+  overflow: visible;
+}
+
+.r3c-root--static .r3c-scene {
+  position: relative;
+  inset: auto;
+  height: auto;
+  min-height: 60dvh;
+  padding: clamp(3rem, 8vh, 6rem) clamp(1.25rem, 5vw, 4rem);
+}
+
+.r3c-root--static .r3c-scene__panel {
+  width: 100%;
+  margin-left: 0;
+  padding: 0;
+  gap: 1.5rem;
+}
+
+.r3c-root--static .r3c-parallax__stack {
+  position: relative;
+  inset: auto;
+  left: auto;
+  top: auto;
+  width: 100%;
+  transform: none;
+  margin-bottom: clamp(1.5rem, 4vh, 3rem);
+}

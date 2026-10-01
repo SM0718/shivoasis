@@ -2,9 +2,15 @@ import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import "./HamburgerMenu.css";
 
+export type HamburgerMenuChild = {
+  label: string;
+  href: string;
+};
+
 export type HamburgerMenuItem = {
   label: string;
   href: string;
+  children?: HamburgerMenuChild[];
 };
 
 export type HamburgerMenuProps = {
@@ -1663,13 +1669,35 @@ export default function HamburgerMenu({
           <div className="menu-card-inner">
             <div className="menu-navigation">
               {items.map((item, index) => (
-                <a
-                  href={item.href}
+                <div
+                  className={`menu-navigation__item ${
+                    item.children?.length ? "has-children" : ""
+                  }`}
                   key={item.href || index}
-                  onClick={closeMenu}
                 >
-                  <span>{item.label}</span>
-                </a>
+                  <a href={item.href} onClick={closeMenu}>
+                    <span>{item.label}</span>
+                  </a>
+
+                  {/* The panel is revealed on hover and on focus, so it stays
+                      reachable by keyboard without a JS open state. */}
+                  {item.children?.length ? (
+                    <div className="menu-submenu">
+                      <div className="menu-submenu-inner">
+                        {item.children.map((child) => (
+                          <a
+                            href={child.href}
+                            key={child.href}
+                            className="menu-submenu-link"
+                            onClick={closeMenu}
+                          >
+                            {child.label}
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  ) : null}
+                </div>
               ))}
             </div>
 
