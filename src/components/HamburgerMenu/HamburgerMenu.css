@@ -32,11 +32,11 @@
 }
 
 .hamburger-button:hover {
-  background: rgba(255, 255, 255, 0.13);
+  background: rgba(255, 255, 255, 0);
 
-  border-color: rgba(255, 255, 255, 0.22);
+  border-color: rgba(255, 255, 255, 0);
 
-  transform: translateY(-1px);
+  transform: none;
 }
 
 .hamburger-button.is-open {
@@ -54,9 +54,9 @@
 }
 
 .hamburger-button[data-tone="ink"]:hover {
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0);
 
-  border-color: rgba(0, 0, 0, 0.24);
+  border-color: rgba(0, 0, 0, 0);
 }
 
 .hamburger-button[data-tone="ink"].is-open {

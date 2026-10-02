@@ -1,4 +1,4 @@
-import { Link } from '@tanstack/react-router'
+﻿import { Link } from '@tanstack/react-router'
 
 import HamburgerMenu, {
   type HamburgerMenuItem,
@@ -39,7 +39,7 @@ export function SiteHeader({ tone = 'cream' }: { tone?: 'cream' | 'ink' }) {
         <div className="pointer-events-auto flex items-center justify-between px-[clamp(1.25rem,4vmin,2.5rem)] py-[clamp(0.9rem,2.2vmin,1.4rem)]">
           <Link
             to="/"
-            className={`font-display text-[clamp(1.1rem,2.4vmin,1.5rem)] leading-none font-extrabold tracking-[0.06em] uppercase ${ink ? 'text-[#1a1a1a]' : 'text-[#f6eee8]'}`}
+            className={`font-display text-[clamp(1.1rem,2.4vmin,1.5rem)] leading-none font-extrabold tracking-[0.06em] uppercase text-white`}
           >
             Shivoasis
           </Link>

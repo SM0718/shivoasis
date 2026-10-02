@@ -752,11 +752,11 @@ export function ArchitectureGallery({ projects }: ArchitectureGalleryProps) {
               />
 
               <div className="architecture-gallery__project-info">
-                <span>{project.category}</span>
+                {/* <span>{project.category}</span>
 
                 <span>{project.location}</span>
 
-                <span>{project.year}</span>
+                <span>{project.year}</span> */}
               </div>
             </div>
           ))}
@@ -814,12 +814,12 @@ export function ArchitectureGallery({ projects }: ArchitectureGalleryProps) {
         {/* -------------------------------------------------- */}
 
         <div className="architecture-gallery__header">
-          <div className="architecture-gallery__brand">ATELIER</div>
+          <div className="architecture-gallery__brand"></div>
 
-          <div className="architecture-gallery__label">SELECTED WORKS</div>
+          <div className="architecture-gallery__label"></div>
 
           <div className="architecture-gallery__count">
-            {projects.length.toString().padStart(2, "0")} PROJECTS
+            {/* {projects.length.toString().padStart(2, "0")} PROJECTS */}
           </div>
         </div>
 

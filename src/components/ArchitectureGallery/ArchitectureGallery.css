@@ -169,8 +169,8 @@
 
   z-index: 30;
 
-  width: min(30vw, 30vh);
-  height: min(30vw, 30vh);
+  width: min(26vw, 26vh);
+  height: min(26vw, 26vh);
 
   display: flex;
 
@@ -464,8 +464,8 @@
   }
 
   .architecture-gallery__cube-wrapper {
-    width: min(25vw, 25vh);
-    height: min(25vw, 25vh);
+    width: min(20vw, 20vh);
+    height: min(20vw, 20vh);
   }
 
   .architecture-gallery__title {
@@ -514,8 +514,8 @@
   }
 
   .architecture-gallery__cube-wrapper {
-    width: min(42vw, 42vh);
-    height: min(42vw, 42vh);
+    width: min(36vw, 36vh);
+    height: min(36vw, 36vh);
 
     opacity: 0.88;
   }

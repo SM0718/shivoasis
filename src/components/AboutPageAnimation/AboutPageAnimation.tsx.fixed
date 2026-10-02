@@ -1,0 +1,780 @@
+﻿import { useEffect, useRef } from 'react'
+import Lenis from '@studio-freight/lenis'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import Splitting from 'splitting'
+import 'splitting/dist/splitting.css'
+import 'splitting/dist/splitting-cells.css'
+import './AboutPageAnimation.css'
+import { preloadFonts } from './utils'
+
+gsap.registerPlugin(ScrollTrigger)
+
+export function AboutPageAnimation() {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const lenisRef = useRef<Lenis | null>(null)
+  const rafRef = useRef<number | null>(null)
+
+  useEffect(() => {
+    const container = containerRef.current
+    if (!container) return
+
+    container.classList.add('about-page', 'demo-2', 'loading')
+
+    Splitting()
+
+    const fx16Titles = Array.from(
+      container.querySelectorAll<HTMLElement>('.content__title[data-splitting][data-effect16]')
+    )
+    const fx17Titles = Array.from(
+      container.querySelectorAll<HTMLElement>('.content__title[data-splitting][data-effect17]')
+    )
+    const fx18Titles = Array.from(
+      container.querySelectorAll<HTMLElement>('.content__title[data-splitting][data-effect18]')
+    )
+    const fx19Titles = Array.from(
+      container.querySelectorAll<HTMLElement>('.content__title[data-splitting][data-effect19]')
+    )
+    const fx20Titles = Array.from(
+      container.querySelectorAll<HTMLElement>('.content__title[data-splitting][data-effect20]')
+    )
+    const fx21Titles = Array.from(
+      container.querySelectorAll<HTMLElement>('.content__title[data-splitting][data-effect21]')
+    )
+    const fx22Titles = Array.from(
+      container.querySelectorAll<HTMLElement>('.content__title[data-splitting][data-effect22]')
+    )
+    const fx23Titles = Array.from(
+      container.querySelectorAll<HTMLElement>('.content__title[data-splitting][data-effect23]')
+    )
+    const fx24Titles = Array.from(
+      container.querySelectorAll<HTMLElement>('.content__title[data-splitting][data-effect24]')
+    )
+    const fx25Titles = Array.from(
+      container.querySelectorAll<HTMLElement>('.content__title[data-splitting][data-effect25]')
+    )
+    const fx26Titles = Array.from(
+      container.querySelectorAll<HTMLElement>('.content__title[data-splitting][data-effect26]')
+    )
+    const fx27Titles = Array.from(
+      container.querySelectorAll<HTMLElement>('.content__title[data-splitting][data-effect27]')
+    )
+    const fx28Titles = Array.from(
+      container.querySelectorAll<HTMLElement>('.content__title[data-splitting][data-effect28]')
+    )
+    const fx29Titles = Array.from(
+      container.querySelectorAll<HTMLElement>('.content__title[data-splitting][data-effect29]')
+    )
+
+    const lenis = new Lenis({
+      lerp: 0.2,
+      smooth: true,
+    })
+    lenisRef.current = lenis
+
+    lenis.on('scroll', () => ScrollTrigger.update())
+
+    const initScroll = () => {
+      lenis.raf(time)
+      rafRef.current = requestAnimationFrame(scrollFn)
+    }
+    rafRef.current = requestAnimationFrame(scrollFn)
+
+    fx16Titles.forEach((title) => {
+      gsap.fromTo(
+        title,
+        { transformOrigin: '0% 50%', rotate: 3 },
+        {
+          ease: 'none',
+          rotate: 0,
+          scrollTrigger: {
+            trigger: title,
+            start: 'top bottom',
+            end: 'top top',
+            scrub: true,
+          },
+        }
+      )
+      gsap.fromTo(
+        title.querySelectorAll('.word'),
+        { willChange: 'opacity', opacity: 0.1 },
+        {
+          ease: 'none',
+          opacity: 1,
+          stagger: 0.05,
+          scrollTrigger: {
+            trigger: title,
+            start: 'top bottom-=20%',
+            end: 'center top+=20%',
+            scrub: true,
+          },
+        }
+      )
+    })
+
+    fx17Titles.forEach((title) => {
+      const chars = title.querySelectorAll('.char')
+      chars.forEach((char) => {
+        const parent = char.parentNode as HTMLElement
+        if (parent) gsap.set(parent, { perspective: 1000 })
+      })
+      gsap.fromTo(
+        chars,
+        {
+          willChange: 'opacity, transform',
+          opacity: 0,
+          rotateX: () => gsap.utils.random(-120, 120),
+          z: () => gsap.utils.random(-200, 200),
+        },
+        {
+          ease: 'none',
+          opacity: 1,
+          rotateX: 0,
+          z: 0,
+          stagger: 0.02,
+          scrollTrigger: {
+            trigger: title,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true,
+          },
+        }
+      )
+    })
+
+    fx18Titles.forEach((title) => {
+      const chars = title.querySelectorAll('.char')
+      chars.forEach((char) => {
+        const parent = char.parentNode as HTMLElement
+        if (parent) gsap.set(parent, { perspective: 1000 })
+      })
+      gsap.fromTo(
+        chars,
+        { willChange: 'opacity, transform', opacity: 0.2, z: -800 },
+        {
+          ease: 'back.out(1.2)',
+          opacity: 1,
+          z: 0,
+          stagger: 0.04,
+          scrollTrigger: {
+            trigger: title,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true,
+          },
+        }
+      )
+    })
+
+    fx19Titles.forEach((title) => {
+      const chars = title.querySelectorAll('.char')
+      chars.forEach((char) => {
+        const parent = char.parentNode as HTMLElement
+        if (parent) gsap.set(parent, { perspective: 1000 })
+      })
+      gsap.fromTo(
+        chars,
+        {
+          willChange: 'opacity, transform',
+          transformOrigin: '50% 0%',
+          opacity: 0,
+          rotationX: -90,
+          z: -200,
+        },
+        {
+          ease: 'power1',
+          opacity: 1,
+          stagger: 0.05,
+          rotationX: 0,
+          z: 0,
+          scrollTrigger: {
+            trigger: title,
+            start: 'center bottom',
+            end: 'bottom top+=20%',
+            scrub: true,
+          },
+        }
+      )
+    })
+
+    fx20Titles.forEach((title) => {
+      const chars = title.querySelectorAll('.char')
+      chars.forEach((char) => {
+        const parent = char.parentNode as HTMLElement
+        if (parent) gsap.set(parent, { perspective: 1000 })
+      })
+      gsap.fromTo(
+        chars,
+        {
+          willChange: 'opacity, transform',
+          transformOrigin: '50% 100%',
+          opacity: 0,
+          rotationX: 90,
+        },
+        {
+          ease: 'power4',
+          opacity: 1,
+          stagger: { each: 0.03, from: 'random' },
+          rotationX: 0,
+          scrollTrigger: {
+            trigger: title,
+            start: 'center bottom',
+            end: 'bottom top+=20%',
+            scrub: true,
+          },
+        }
+      )
+    })
+
+    fx21Titles.forEach((title) => {
+      const words = Array.from(title.querySelectorAll<HTMLElement>('.word'))
+      for (const word of words) {
+        const chars = word.querySelectorAll('.char')
+        chars.forEach((char) => {
+          const parent = char.parentNode as HTMLElement
+          if (parent) gsap.set(parent, { perspective: 2000 })
+        })
+        gsap.fromTo(
+          chars,
+          {
+            willChange: 'opacity, transform',
+            opacity: 0,
+            y: (_p, _i, arr) => -40 * Math.abs(_p - arr.length / 2),
+            z: () => gsap.utils.random(-1500, -600),
+            rotationX: () => gsap.utils.random(-500, -200),
+          },
+          {
+            ease: 'power1.inOut',
+            opacity: 1,
+            y: 0,
+            z: 0,
+            rotationX: 0,
+            stagger: { each: 0.06, from: 'center' },
+            scrollTrigger: {
+              trigger: word,
+              start: 'top bottom',
+              end: 'top top+=15%',
+              scrub: true,
+            },
+          }
+        )
+      }
+      }
+    })
+            ease: 'power1',
+            opacity: 1,
+            stagger: 0.05,
+            rotationX: 0,
+            z: 0,
+            scrollTrigger: {
+                trigger: title,
+                start: 'center bottom',
+                end: 'bottom top+=20%',
+                scrub: true,
+            }
+        })
+        })
+    })
+    fx20Titles.forEach((title) => {
+        
+        const chars = title.querySelectorAll('.char');
+        
+        chars.forEach(char => gsap.set(char.parentNode, { perspective: 1000 })); 
+        
+        gsap.fromTo(chars, {
+            'will-change': 'opacity, transform', 
+            transformOrigin: '50% 100%',
+            opacity: 0,
+            rotationX: 90
+        }, 
+        {
+            ease: 'power4',
+            opacity: 1,
+            stagger:  {
+                each: 0.03,
+                from: 'random'
+            },
+            rotationX: 0,
+            scrollTrigger: {
+                trigger: title,
+                start: 'center bottom',
+                end: 'bottom top+=20%',
+                scrub: true,
+            }
+        })
+    })
+
+    fx21Titles.forEach((title) => {
+        const words = Array.from(title.querySelectorAll('.word'));
+        
+        for (const word of words) {
+            
+            const chars = word.querySelectorAll('.char');
+        
+            chars.forEach(char => gsap.set(char.parentNode, { perspective: 2000 })); 
+
+            gsap.fromTo(chars, {
+                'will-change': 'opacity, transform', 
+                opacity: 0,
+                y: (position,_,arr) => -40*Math.abs(position-arr.length/2),
+                z: () => gsap.utils.random(-1500,-600),
+                rotationX: () => gsap.utils.random(-500,-200)
+            }, 
+            {
+                ease: 'power1.inOut',
+                opacity: 1,
+                y: 0,
+                z: 0,
+                rotationX: 0,
+                stagger: {
+                    each: 0.06,
+                    from: 'center'
+                },
+                scrollTrigger: {
+                    trigger: word,
+                    start: 'top bottom',
+                    end: 'top top+=15%',
+                    scrub: true,
+                }
+            })
+        }
+    })
+
+        }
+
+    }; loadFonts();
+
+    fx22Titles.forEach(title => {
+        
+        const words = [...title.querySelectorAll('.word')];
+        
+        for (const word of words) {
+            const chars = word.querySelectorAll('.char');
+            const charsTotal = chars.length;
+
+            chars.forEach(char => gsap.set(char.parentNode, { perspective: 1000 })); 
+            
+            gsap.fromTo(chars, {
+                'will-change': 'transform', 
+                x: position => {
+                    const factor = position < Math.ceil(charsTotal/2) ? position : Math.ceil(charsTotal/2) - Math.abs(Math.floor(charsTotal/2) - position) - 1;
+                    return (charsTotal%2 ? Math.abs(Math.ceil(charsTotal/2)-1-factor) : Math.abs(Math.ceil(charsTotal/2)-factor) )*200*(position < charsTotal/2 ? -1 : 1);
+                },
+                y: position => {
+                    const factor = position < Math.ceil(charsTotal/2) ? position : Math.ceil(charsTotal/2) - Math.abs(Math.floor(charsTotal/2) - position) - 1;
+                    return factor*60;
+                },
+                rotationY: -270,
+                rotationZ: position => {
+                    const factor = position < Math.ceil(charsTotal/2) ? position : Math.ceil(charsTotal/2) - Math.abs(Math.floor(charsTotal/2) - position) - 1;
+                    return position < charsTotal/2 ? Math.abs(factor-charsTotal/2)*8 : -1*Math.abs(factor-charsTotal/2)*8;
+                }
+            }, 
+            {
+                ease: 'power2.inOut',
+                x: 0,
+                y: 0,
+                rotationZ: 0,
+                rotationY: 0,
+                scale: 1,
+                scrollTrigger: {
+                    trigger: word,
+                    start: 'top bottom+=40%',
+                    end: 'top top+=15%',
+                    scrub: true,
+                }
+            }; loadFonts();
+
+        }
+
+    }; loadFonts();
+
+    fx23Titles.forEach(title => {
+        
+        const words = [...title.querySelectorAll('.word')];
+        
+        for (const [wordPosition, word] of words.entries()) {
+
+            gsap.fromTo(word.querySelectorAll('.char'), {
+                'will-change': 'transform', 
+                scale: 0.01,
+                x: (pos,_,arr) => {
+                    return wordPosition%2 ? pos*50 : (arr.length-pos-1)*-50
+                }
+            }, 
+            {
+                ease: 'power4',
+                scale: 1,
+                x: 0,
+                scrollTrigger: {
+                    trigger: word,
+                    start: 'center bottom',
+                    end: 'bottom top-=40%',
+                    scrub: true,
+                }
+            }; loadFonts();
+            
+        }
+        
+    }; loadFonts();
+
+    fx24Titles.forEach(title => {
+        
+        const chars = title.querySelectorAll('.char');
+        const charsTotal = chars.length;
+        
+        gsap.fromTo(chars, {
+            'will-change': 'transform', 
+            y: position => {
+                const factor = position < Math.ceil(charsTotal/2) ? position : Math.ceil(charsTotal/2) - Math.abs(Math.floor(charsTotal/2) - position) - 1;
+                return (charsTotal/2-factor+6)*130;
+            }
+        }, 
+        {
+            ease: 'elastic.out(.4)',
+            y: 0,
+            stagger: {
+                amount: 0.1,
+                from: 'center'
+            },
+            scrollTrigger: {
+                trigger: title,
+                start: 'top bottom',
+                end: 'bottom top-=50%',
+                scrub: true,
+            }
+        }; loadFonts();
+
+    }; loadFonts();
+
+    fx25Titles.forEach(title => {
+        
+        gsap.fromTo(title.querySelectorAll('.char'), {
+            'will-change': 'transform',
+            transformOrigin: '50% 100%',
+            scaleY: 0
+        }, 
+        {
+            ease: 'power3.in',
+            opacity: 1,
+            scaleY: 1,
+            stagger: 0.05,
+            scrollTrigger: {
+                trigger: title,
+                start: 'center center',
+                end: '+=500%',
+                scrub: true,
+                pin: title.parentNode,
+            }
+        }; loadFonts();
+
+    }; loadFonts();
+
+    fx26Titles.forEach(title => {
+        
+        const words = [...title.querySelectorAll('.word')];
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: title,
+                start: 'center center',
+                end: '+=100%',
+                scrub: true,
+                pin: title.parentNode,
+            }
+        }; loadFonts();
+        for (const [wordPosition, word] of words.entries()) {
+            tl.fromTo(word.querySelectorAll('.char'), {
+                'will-change': 'transform', 
+                transformOrigin: () => !wordPosition%2 ? '50% 0%' : '50% 100%',
+                scaleY: 0
+            }, 
+            {
+                ease: 'power1.inOut',
+                scaleY: 1,
+                stagger: {
+                    amount: 0.3,
+                    from: 'center'
+                }
+            }, 0);
+            
+        }
+
+    }; loadFonts();
+
+    fx27Titles.forEach(title => {
+        
+        const words = [...title.querySelectorAll('.word')];
+        
+        words.forEach(word => gsap.set(word.parentNode, { perspective: 1000 })); 
+
+        gsap.fromTo(words, {
+            'will-change': 'opacity, transform', 
+            z: () => gsap.utils.random(500,950),
+            opacity: 0,
+            xPercent: (pos) => gsap.utils.random(-100,100),
+            yPercent: (pos) => gsap.utils.random(-10,10),
+            rotationX: () => gsap.utils.random(-90,90)
+        }, 
+        {
+            ease: 'expo',
+            opacity: 1,
+            rotationX: 0,
+            rotationY: 0,
+            xPercent: 0,
+            yPercent: 0,
+            z: 0,
+            scrollTrigger: {
+                trigger: title,
+                start: 'center center',
+                end: '+=300%',
+                scrub: true,
+                pin: title.parentNode,
+            },
+            stagger: {
+                each: 0.006,
+                from: 'random'
+            }
+        }; loadFonts();
+
+    }; loadFonts();
+
+    fx28Titles.forEach(title => {
+        
+        const words = [...title.querySelectorAll('.word')];
+        
+        for (const word of words) {
+
+            const chars = word.querySelectorAll('.char');
+            const charsTotal = chars.length;
+            
+            gsap.fromTo(chars, {
+                'will-change': 'transform, filter', 
+                transformOrigin: '50% 100%',
+                scale: position => {
+                    const factor = position < Math.ceil(charsTotal/2) ? position : Math.ceil(charsTotal/2) - Math.abs(Math.floor(charsTotal/2) - position) - 1;
+                    return gsap.utils.mapRange(0, Math.ceil(charsTotal/2), 0.5, 2.1, factor);
+                },
+                y: position => {
+                    const factor = position < Math.ceil(charsTotal/2) ? position : Math.ceil(charsTotal/2) - Math.abs(Math.floor(charsTotal/2) - position) - 1;
+                    return gsap.utils.mapRange(0, Math.ceil(charsTotal/2), 0, 60, factor);
+                },
+                rotation: position => {
+                    const factor = position < Math.ceil(charsTotal/2) ? position : Math.ceil(charsTotal/2) - Math.abs(Math.floor(charsTotal/2) - position) - 1;
+                    return position < charsTotal/2 ? gsap.utils.mapRange(0, Math.ceil(charsTotal/2), -4, 0, factor) : gsap.utils.mapRange(0, Math.ceil(charsTotal/2), 0, 4, factor);
+                },
+                filter: 'blur(12px) opacity(0)',
+            }, 
+            {
+                ease: 'power2.inOut',
+                y: 0,
+                rotation: 0,
+                scale: 1,
+                filter: 'blur(0px) opacity(1)',
+                scrollTrigger: {
+                    trigger: word,
+                    start: 'top bottom+=40%',
+                    end: 'top top+=15%',
+                    scrub: true,
+                },
+                stagger: {
+                    amount: 0.15,
+                    from: 'center'
+                }
+            })
+        }
+    })
+
+    const loadFonts = async () => {
+      try {
+        await preloadFonts('cvn8slu')
+      } catch (e) {
+        // ignore
+      }
+      if (container) container.classList.remove('loading')
+      initScroll()
+    }
+    loadFonts()
+
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current)
+      lenis.destroy()
+      ScrollTrigger.getAll().forEach((t) => t.kill())
+    }
+  }, [])
+
+  return (
+    <div ref={containerRef}>
+      <main>
+
+        }
+
+    }; loadFonts();
+
+    fx29Titles.forEach(title => {
+        
+        const words = [...title.querySelectorAll('.word')];
+        
+        for (const [pos,word] of words.entries()) {
+            
+            const chars = word.querySelectorAll('.char');
+            
+            gsap.fromTo(chars, {
+                'will-change': 'transform', 
+                transformOrigin: `${pos%2 ? 0 : 100}% ${pos%2 ? 100 : 0}%`,
+                scale: 0
+            }, 
+            {
+                ease: 'power4',
+                scale: 1,
+                stagger:  {
+                    each: 0.03,
+                    from: pos%2 ? 'end' : 'start'
+                },
+                scrollTrigger: {
+                    trigger: word,
+                    start: 'top bottom-=10%',
+                    end: 'top top',
+                    scrub: true,
+                }
+            }; loadFonts();
+        }
+        
+    }; loadFonts();
+};
+
+// Preload images and fonts
+const loadFonts = async () => { try { await preloadFonts('cvn8slu') } catch (e) {}
+    // Remove loader (loading class)
+    if (container) container.classList.remove('loading');
+    // Lenis (smooth scrolling)
+    
+    // GSAP Scroll Triggers
+    initScroll();
+}; loadFonts();
+
+
+
+
+
+                </div>
+                <a className="frame__prev" href="#" onClick={(e)=>e.preventDefault()}>Previous demo</a>
+                <nav className="frame__demos">
+                    <a href="#" onClick={(e)=>e.preventDefault()}>Set 1</a>
+                    <span>Set 2</span>
+                </nav>
+            </div>
+            <div className="intro">
+                <h1 className="intro__title">
+                    <span className="intro__title-pre">On-Scroll</span>
+                    <span className="intro__title-sub">Typography Animations<sup><small>2</small></sup></span>
+                </h1>
+                <span className="intro__info">Please scroll moderately to fully experience the animations</span>
+            </div>
+            <div className="content">
+                <h2 className="content__title content__title--left" data-splitting data-effect16>
+                    <p className="font-small">As human beings, we often find ourselves feeling out of place in the world around us. We sense that something is not quite right, that the reality we experience is not necessarily the truth. And yet, we are bound by the beliefs and illusions that have been ingrained in us since childhood.
+                        It can be a difficult and confusing journey to try and unravel these beliefs, to see beyond the layers of deception that cloud our vision. We may feel as though we need to make an effort, to strive for enlightenment, to grasp at something just beyond our reach.
+                        But what if the answer is not found in effort, but in surrender? What if we simply allow ourselves to be carried by the flow of existence, to trust in the natural rhythm of life itself?
+                    </p>
+                </h2>
+            </div>
+            <div className="content">
+                <h2 className="content__title" data-splitting data-effect17><span>Stubborn</span><span>Naivety</span></h2>
+            </div>
+            <div className="content">
+                <p>It is in this surrender that we may find the truth of who we are, the essence of our being that lies just beyond the veil of illusion. We let go of our striving, our constant seeking, and instead allow ourselves to be swept up in the infinite mystery of existence.</p>
+            </div>
+            <div className="content">
+                <h2 className="content__title" data-splitting data-effect18><span className="font-16 font-upper">Surrender to reality</span><span className="font-16 font-upper">Step into the light</span></h2>
+            </div>
+            <div className="content">
+                <p>This surrender does not mean giving up, nor does it mean accepting the status quo. It is, in fact, quite the opposite. It is a willingness to let go of the illusions that have been holding us back, to see beyond the limitations of our own beliefs, and to embrace the fullness of life itself.</p>
+            </div>
+            <div className="content">
+                <h2 className="content__title" data-splitting data-effect19><span className="font-21 font-upper">Intense</span><span className="font-21 font-upper">Nature</span></h2>
+            </div>
+            <div className="content">
+                <p>It is a journey of discovery, of exploration, of coming to know ourselves in a deeper and more profound way. And in that journey, we may find the truth that has been eluding us, and the freedom that comes with it.</p>
+            </div>
+            <div className="content">
+                <h2 className="content__title" data-splitting data-effect20><span className="font-22 font-upper">Waking</span><span className="font-12 font-upper">Life</span></h2>
+            </div>
+            <div className="content">
+                <p>So let us surrender ourselves to the flow of existence, and trust in the journey that lies before us. For in that surrender, we may find the truth, and the beauty that comes with it.</p>
+            </div>
+            <div className="content content--full">
+                <h2 className="content__title" data-splitting data-effect21><span className="font-20">Beauty</span><span className="font-18">remains</span></h2>
+            </div>
+            <div className="content">
+                <p>The truth is that we are all simply waves in the ocean of existence, arising and falling back into the depths from which we came. And yet, we spend so much of our lives struggling against the natural ebb and flow of the universe, trying to hold on to what is fleeting and resist what is inevitable. </p>
+            </div>
+            <div className="content content--full">
+                <h2 className="content__title" data-splitting data-effect22><span className="font-23 font-upper">Dance</span><span className="font-upper font-16">into</span><span className="font-upper font-23">Existence</span></h2>
+            </div>
+            <div className="content">
+                <p> But the more we cling to the illusion of control, the more we suffer. The art of letting go is not a skill to be learned, but a state of being to be realized. It is the recognition that we are not separate from the world around us, but a part of it, and that our true power lies not in trying to dominate it, but in surrendering to it.</p>
+            </div>
+            <div className="content content--full">
+                <h2 className="content__title" data-splitting data-effect23><span className="font-upper font-22">Deeper</span><span className=" font-upper font-20">Love</span><span className=" font-upper font-18">Light</span></h2>
+            </div>
+            <div className="content">
+                <p>When we let go of our attachment to outcomes, our fear of the unknown, and our need for certainty, we open ourselves up to the infinite possibilities and potentialities of life.</p>
+            </div>
+            <div className="content content--full">
+                <h2 className="content__title" data-splitting data-effect24><span className="font-15 font-upper">Embrace</span></h2>
+            </div>
+            <div className="content">
+                <p>Letting go is not giving up, but rather a courageous act of trust in the universe and in ourselves. So let us embrace the art of letting go, and discover the freedom and joy that lie beyond our limited notions of control.</p>
+            </div>
+            <div className="content">
+                <h2 className="content__title content__title--left" data-splitting data-effect25>
+                   <span className="font-13 font-medium font-height-medium">
+                        Feel because you have a heart<br>
+                        And let it guide you through the dark.<br>
+                        For it's the well of emotions deep,<br>
+                        That helps you laugh, love, and sleep.<br>
+                    </span>
+                </h2>
+            </div>
+            <div className="content content--full">
+                <h2 className="content__title" data-splitting data-effect26><span className="font-upper font-19">Cosmic</span><span className="font-upper font-23">Symphony</span></h2>
+            </div>
+            <div className="content">
+                <p>Think because you have a mind,
+                    that makes you unique and one of a kind.
+                    With it you can learn and grow,
+                    and see the world from its highest glow.
+                </p>
+            </div>
+            <div className="content">
+                <h2 className="content__title" data-splitting data-effect27>
+                <span className="font-upper font-19 font-medium">
+                Act because you have hands,
+                that bring to life your every command.
+                </span>
+                </h2>
+            </div>
+            <div className="content content--full">
+                <h2 className="content__title" data-splitting data-effect28><span className="font-12 font-medium">Liberation</span></h2>
+            </div>
+            <div className="content">
+                <p>And when death comes, like the falling night,
+                    remember the purpose that gave you flight.
+                    For you were made to make a mark,
+                    and leave behind a legacy bright and stark.
+                </p>
+            </div>
+            <div className="content">
+                <h2 className="content__title" data-splitting data-effect29><span className="font-upper">Discipline</span><span className="font-upper">above</span><span className="font-upper">Motivation</span><span className="font-upper">Always</span></h2>
+            </div>
+            <div className="content">
+                <p>So feel with your heart, think with your mind,
+                    and act with your hands, one of a kind.
+                    For you are a gift, full of potential and might,
+                    a spark of the divine, shining bright.
+                </p>
+            </div>
+        </main>
+      </div>
+  )
+}
